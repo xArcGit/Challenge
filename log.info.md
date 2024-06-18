@@ -16,11 +16,11 @@
    - Open the `log.md` file in your repository.
 2. **Add New Entry:**
    - Append a new entry to the file using the following format:
-     ```markdown
+    
      | S.No | Date       | Type    | Name                     | Language | Link                                    | Website   | Description                     |
      |------|------------|---------|--------------------------|----------|-----------------------------------------|-----------|---------------------------------|
      | 1    | YYYY-MM-DD | new     | Problem Name             | Language | [Link](https://website.com/problem)     | Website   | Brief description of the solution |
-     ```
+
 
 ### Step 3: Commit Your Changes
 
@@ -59,19 +59,19 @@ Here’s a practical example of adding an entry for a new problem and an improve
 
 ### New Problem Entry
 
-```markdown
+
 | S.No | Date       | Type    | Name              | Language | Link                                   | Website   | Description                        |
 |------|------------|---------|-------------------|----------|----------------------------------------|-----------|------------------------------------|
 | 1    | 2024-06-18 | new     | Two Sum           | Python   | [Link](https://leetcode.com/problems/two-sum) | LeetCode  | Used a hashmap for O(n) solution   |
-```
+
 
 ### Improved Solution Entry
 
 Locate the original problem log for "Two Sum" and append the new solution details below it:
 
-```markdown
+
 | S.No | Date       | Type    | Name              | Language | Link                                   | Website   | Description                        |
 |------|------------|---------|-------------------|----------|----------------------------------------|-----------|------------------------------------|
 | 1    | 2024-06-08 | new     | Two Sum           | Python   | [Link](https://leetcode.com/problems/two-sum) | LeetCode  | Used a hashmap for O(n) solution   |
 |      | 2024-06-09 | improve | Two Sum           | Python   | [Link](https://leetcode.com/problems/two-sum) | LeetCode  | Optimized with early return        |
-```
+
