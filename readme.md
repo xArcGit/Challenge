@@ -58,7 +58,6 @@ Welcome to the Year-Long LeetCode Challenge! This repository documents my journe
 
 ### Directory Structure
 
-```lt
 /
 ├── algorithms/
 │   ├── arrays/
