@@ -99,6 +99,7 @@ Welcome to the Year-Long LeetCode Challenge! This repository documents my journe
 
 - Feel free to fork this repository and adapt it to your own challenge.
 - Contributions are welcome. If you have improvements or new strategies, please submit a pull request.
+- See file `logo.info.md`
 
 ### Steps to Get Started
 
@@ -120,7 +121,7 @@ Welcome to the Year-Long LeetCode Challenge! This repository documents my journe
    - Regularly commit your changes:
      ```bash
      git add .
-     git commit -m "Improve Solution XYZ"
+     git commit -m "Logged problem: [Problem Name]"
      git push origin main
      ```
 
