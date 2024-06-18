@@ -100,10 +100,6 @@ Welcome to the Year-Long LeetCode Challenge! This repository documents my journe
 - Feel free to fork this repository and adapt it to your own challenge.
 - Contributions are welcome. If you have improvements or new strategies, please submit a pull request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ### Steps to Get Started
 
 1. **Fork the Repository:**
@@ -124,9 +120,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    - Regularly commit your changes:
      ```bash
      git add .
-     git commit -m "Solved problem XYZ"
+     git commit -m "Improve Solution XYZ"
      git push origin main
      ```
 
 5. **Maintain a Daily Log:**
    - Update the `log.md` file daily with the problems solved, reflections, and insights.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
