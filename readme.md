@@ -103,16 +103,16 @@ Welcome to the Year-Long LeetCode Challenge! This repository documents my journe
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
 
 ### Steps to Get Started
+
 1. **Fork the Repository:**
    - Go to the GitHub repository page and click on the "Fork" button.
 
 2. **Clone the Repository:**
    - Open a terminal and run:
      ```bash
-     git clone https://github.com/your-username/leetcode-year-challenge.git
+     git clone https://github.com/xArcGit/Challenge.git
      cd leetcode-year-challenge
      ```
 
