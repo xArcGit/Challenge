@@ -15,7 +15,6 @@ class LogEntry:
     name: str
     language: str
     link: str
-    website: str
     description: str
 
 
@@ -81,11 +80,9 @@ def log_entry(
     if last_date == entry_date_str:
         serial_number = ""
     else:
-        if entry.entry_type != "update":
+        if entry.entry_type.lower() != "update":
             # Increment serial number only for new entries
-            serial_number = str((last_serial or 0) + 1)
-            if serial_number:
-                serial_number = serial_number.rjust(4)
+            serial_number = str((last_serial or 0) + 1).rjust(4)
         else:
             serial_number = ""
 
@@ -94,7 +91,7 @@ def log_entry(
     log_line = "| {0} | {1} | {2:<7} | {3:<17} | {4:<8} | [Link]({5}) | {6:<9} | {7:<34} |\n".format(
         serial_number,
         entry_date_str,
-        entry.entry_type,
+        entry.entry_type.capitalize(),
         entry.name,
         entry.language,
         entry.link,
@@ -105,41 +102,96 @@ def log_entry(
     f.write(log_line)
 
 
+def log_update(entry: LogEntry) -> None:
+    """Log an update entry below the last matching name and link in the log file."""
+    temp_file = "temp.md"
+    with open(LOG_FILE, "r") as f, open(temp_file, "w") as temp_f:
+        lines = f.readlines()
+        temp_f.writelines(lines[:2])  # Write the header to the temp file
+
+        # Find the last matching entry
+        inserted = False
+        for i, line in enumerate(lines[2:], start=2):
+            temp_f.write(line)
+            parts = line.split("|")
+            if (
+                parts[4].strip() == entry.name
+                and parts[6].strip() == f"[Link]({entry.link})"
+            ):
+                # Insert the update entry below the matching entry
+                temp_f.write(
+                    "|      | {0} | {1:<7} | {2:<17} | {3:<8} | [Link]({4}) | {5:<9} | {6:<34} |\n".format(
+                        datetime.now().strftime(DATE_FORMAT),
+                        entry.entry_type.capitalize(),
+                        entry.name,
+                        entry.language,
+                        entry.link,
+                        extract_website_name(entry.link),
+                        entry.description,
+                    )
+                )
+                inserted = True
+
+        if not inserted:
+            temp_f.write(
+                "|      | {0} | {1:<7} | {2:<17} | {3:<8} | [Link]({4}) | {5:<9} | {6:<34} |\n".format(
+                    datetime.now().strftime(DATE_FORMAT),
+                    entry.entry_type.capitalize(),
+                    entry.name,
+                    entry.language,
+                    entry.link,
+                    extract_website_name(entry.link),
+                    entry.description,
+                )
+            )
+
+    os.replace(temp_file, LOG_FILE)
+
+
 def main() -> None:
     """Main function to run the logging script."""
     init_log_file()
 
-    while True:
+    try:
         while True:
-            entry_type: str = (
-                input("Enter the entry type (new|n/update|u): ").strip().lower()
-            )
-            if entry_type in ["new", "n"]:
-                entry_type = "new"
-                break
-            elif entry_type in ["update", "u"]:
-                entry_type = "update"
-                break
+            while True:
+                entry_type: str = (
+                    input("Enter the entry type (new|n/update|u): ").strip().lower()
+                )
+                if entry_type in ["new", "n"]:
+                    entry_type = "new"
+                    break
+                elif entry_type in ["update", "u"]:
+                    entry_type = "update"
+                    break
+                else:
+                    print(
+                        "Invalid entry type. Please enter 'new', 'n' or 'update', 'u'."
+                    )
+
+            name: str = input("Enter the name: ").strip().lower()
+            language: str = input("Enter the language: ").strip().capitalize()
+            link: str = input("Enter the link: ").strip()
+            description: str = input("Enter the description: ").strip().lower()
+            entry = LogEntry(entry_type, name, language, link, description)
+
+            if entry_type == "new":
+                last_serial, last_date = get_last_entry_details()
+                with open(LOG_FILE, "a") as f:
+                    log_entry(f, entry, last_serial, last_date)
             else:
-                print("Invalid entry type. Please enter 'new', 'n', 'update', or 'u'.")
-        website: str = ""
-        name: str = input("Enter the name: ").strip()
-        language: str = input("Enter the language: ").strip()
-        link: str = input("Enter the link: ").strip()
-        description: str = input("Enter the description: ").strip()
-        entry = LogEntry(entry_type, name, language, link, website, description)
-        last_serial, last_date = get_last_entry_details()
+                log_update(entry)
 
-        with open(LOG_FILE, "a") as f:
-            log_entry(f, entry, last_serial, last_date)
+            another: str = (
+                input("Do you want to log another entry? (yes|y|enter/no|n): ")
+                .strip()
+                .lower()
+            )
+            if another not in ["yes", "y", ""]:
+                break
 
-        another: str = (
-            input("Do you want to log another entry? (yes|y|enter/no|n): ")
-            .strip()
-            .lower()
-        )
-        if another not in ["yes", "y", ""]:
-            break
+    except KeyboardInterrupt:
+        print("\nExiting...")
 
 
 if __name__ == "__main__":
