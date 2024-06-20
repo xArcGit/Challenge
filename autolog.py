@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
+TMP_FILE: str = "temp.md"
 LOG_FILE: str = "log.md"
 DATE_FORMAT: str = "%Y-%m-%d"
 
@@ -104,22 +105,21 @@ def log_entry(
 
 def log_update(entry: LogEntry) -> None:
     """Log an update entry below the last matching name and link in the log file."""
-    temp_file = "temp.md"
-    with open(LOG_FILE, "r") as f, open(temp_file, "w") as temp_f:
+    with open(LOG_FILE, "r") as f, open(TMP_FILE, "w") as tf:
         lines = f.readlines()
-        temp_f.writelines(lines[:2])  # Write the header to the temp file
+        tf.writelines(lines[:2])  # Write the header to the temp file
 
         # Find the last matching entry
         inserted = False
         for i, line in enumerate(lines[2:], start=2):
-            temp_f.write(line)
+            tf.write(line)
             parts = line.split("|")
             if (
                 parts[4].strip() == entry.name
                 and parts[6].strip() == f"[Link]({entry.link})"
             ):
                 # Insert the update entry below the matching entry
-                temp_f.write(
+                tf.write(
                     "|      | {0} | {1:<7} | {2:<17} | {3:<8} | [Link]({4}) | {5:<9} | {6:<34} |\n".format(
                         datetime.now().strftime(DATE_FORMAT),
                         entry.entry_type.capitalize(),
@@ -133,7 +133,7 @@ def log_update(entry: LogEntry) -> None:
                 inserted = True
 
         if not inserted:
-            temp_f.write(
+            tf.write(
                 "|      | {0} | {1:<7} | {2:<17} | {3:<8} | [Link]({4}) | {5:<9} | {6:<34} |\n".format(
                     datetime.now().strftime(DATE_FORMAT),
                     entry.entry_type.capitalize(),
@@ -145,7 +145,7 @@ def log_update(entry: LogEntry) -> None:
                 )
             )
 
-    os.replace(temp_file, LOG_FILE)
+    os.replace(TMP_FILE, LOG_FILE)
 
 
 def main() -> None:
